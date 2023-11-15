@@ -47,11 +47,13 @@ Test de mise à jour des informations sur les post
 Tests de mise à jour des categories des produits
     ${result}  Set Variable  update tbl_top_category set tcat_name='Black Men' where tcat_id=1
     Execute Sql String  ${result}
+Test de mise à jour des categories de products
     ${result}  Query  select * from tbl_top_category
     Should Be True  ${result}
 Test de mise à jour de commande
     ${result}  Set Variable  update tbl_order set quantity='5' where id=1
     Execute Sql String  ${result}
+Test de mise à jour des commandes
     ${result}  Query  select * from tbl_order
     Should Be True  ${result}
 Test de mise à jour des informations des utilisateurs
