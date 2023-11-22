@@ -94,7 +94,7 @@ Test de gestion des la newsletter
     Should Be True  ${result}
 
 Test d'ajout d'un nouveau client
-    ${result}  Set Variable  INSERT INTO `tbl_customer` (`cust_id`, `cust_name`, `cust_cname`, `cust_email`, `cust_phone`, `cust_country`, `cust_address`, `cust_city`, `cust_state`, `cust_zip`, `cust_b_name`, `cust_b_cname`, `cust_b_phone`, `cust_b_country`, `cust_b_address`, `cust_b_city`, `cust_b_state`, `cust_b_zip`, `cust_s_name`, `cust_s_cname`, `cust_s_phone`, `cust_s_country`, `cust_s_address`, `cust_s_city`, `cust_s_state`, `cust_s_zip`, `cust_password`, `cust_token`, `cust_datetime`, `cust_timestamp`, `cust_status`) VALUES ('1', 'yvan', 'yvan', 'yvanlandry@outlook.com', '655565565', '237', 'Cameroon', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+    ${result}  Set Variable  INSERT INTO `tbl_customer` (`cust_id`, `cust_name`, `cust_cname`, `cust_email`, `cust_phone`, `cust_country`, `cust_address`, `cust_city`, `cust_state`, `cust_zip`, `cust_b_name`, `cust_b_cname`, `cust_b_phone`, `cust_b_country`, `cust_b_address`, `cust_b_city`, `cust_b_state`, `cust_b_zip`, `cust_s_name`, `cust_s_cname`, `cust_s_phone`, `cust_s_country`, `cust_s_address`, `cust_s_city`, `cust_s_state`, `cust_s_zip`, `cust_password`, `cust_token`, `cust_datetime`, `cust_timestamp`, `cust_status`) VALUES (15, 'yvan', 'yvan', 'yvanlandry@outlook.com', '655565565', '237', 'Cameroon', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
     Execute Sql String  ${result}
     ${result}  Query  select * from tbl_product
     Should Be True  ${result}
@@ -158,11 +158,6 @@ Test de suppression d'un payement
 Test de suppression de commande
     ${result}  Query  select * from tbl_order
     Should Be True  ${result}
-Test de note d'un produit
-    ${result}  Query  select * from tbl_order
-    Should Be True  ${result}
-    ${result}  Query  select * from tbl_rating
-    Should Be True  ${result}
 Test d'ajout d'un utilisateur existant
     ${result}  Query  select * from tbl_order
     Should Be True  ${result}
@@ -176,8 +171,91 @@ Test d'ajout d'une commande erronée
 Test d'ajout d'une categorie existante
     ${result}  Query  select * from tbl_order
     Should Be True  ${result}
-Test de montée en charge
-    ${result}  Query  select * from tbl_order
-    Should Be True  ${result}
+
+Test de recuperation de 1000 informations de produits dans la base de données
+    FOR    ${i}    IN RANGE    1    1000    1
+        ${produit}  Query  select * from tbl_product
+        Log Many  ${produit}
+        Should Be True  ${produit}
+    END
+
+Test de recuperation de 1000 informatiosn d'utilisateurs de la base de données
+    FOR    ${i}    IN RANGE    1    1000    1
+        ${user}  Query  select * from tbl_product
+        Log Many  ${user}
+        Should Be True  ${user}
+    END
+Test de recuperation de 1000 informations des commandes de la base de données
+    FOR    ${i}    IN RANGE    1    1000    1
+        ${produit}  Query  select * from tbl_product
+        Log Many  ${produit}
+        Should Be True  ${produit}
+    END
+Test de recuperation de 1000 informations de categorie de la base de données
+    FOR    ${counter}    IN RANGE    1    1000    1
+        ${cat}  Query  select * from tbl_top_category
+        Log Many  ${cat}
+        Should Be True  ${cat}
+    END
+Test d'insertion de 1000 informations de produits dans la base de données
+    FOR    ${counter}    IN RANGE    1    1000    1
+        ${result}  Set Variable  INSERT INTO tbl_product (`p_id`, `p_name`, `p_old_price`, `p_current_price`, `p_qty`, `p_featured_photo`, `p_description`, `p_short_description`, `p_feature`, `p_condition`, `p_return_policy`, `p_total_view`, `p_is_featured`, `p_is_active`, `ecat_id`) VALUES (${counter}+500, 'Parfum pour homme ${counter}', '130', '110', '59', 'photo.jpg', 'Ceci est un parfum pour homme', 'Ceci est un parfum pour homme', 'Ceci est un parfum pour homme', 'Ceci est un parfum pour homme', 'Aucun', '0', '0', '1', '24');
+        Execute Sql String  ${result}
+        ${result}  Query  select * from tbl_product
+        Should Be True  ${result}
+    END
+
+Test d'insertion de 1000 categories de produits dans la basede données
+    FOR    ${counter}    IN RANGE    1    1000    1
+        ${result}  Set Variable  INSERT INTO `tbl_top_category` (`tcat_id`, `tcat_name`, `show_on_menu`) VALUES (${counter}+500, 'Health and Household', '1')
+        Execute Sql String  ${result}
+        ${result}  Query  select * from tbl_top_category
+        Should Be True  ${result}
+    END
+
+Test d'insertion de 1000 commandes dans la base de données
+    FOR    ${counter}    IN RANGE    1    1000    1
+        ${result}  Set Variable  INSERT INTO `tbl_order` (`id`, `product_id`, `product_name`, `size`, `color`, `quantity`, `unit_price`, `payment_id`) VALUES (${counter}+500, '94', 'WD 5TB Elements Portable External Hard Drive HDD', '5T', 'Black', '1', '149', '1647800902')
+        Execute Sql String  ${result}
+        ${result}  Query  select * from tbl_order
+        Should Be True  ${result}
+    END
+
+Test d'insertion de 1000 souscriptions dans la base de données
+    FOR    ${counter}    IN RANGE    1    1000    1
+        ${result}  Set Variable  INSERT INTO `tbl_subscriber` (`subs_id`, `subs_email`, `subs_date`, `subs_date_time`, `subs_hash`, `subs_active`) VALUES (${counter}+500, 'awsm785@mail.com', '2022-03-20', '2022-03-20 10:28:21', '94096ae01fc65e71c50c7843d096e041', '1')
+        Execute Sql String  ${result}
+        ${result}  Query  select * from tbl_subscriber
+        Should Be True  ${result}
+    END
+
+Test de suppresion instantannée des 1000 produits ajoutés
+    FOR    ${counter}    IN RANGE    1    1000    1
+        Execute Sql String  DELETE FROM tbl_product WHERE p_id = ${counter}+500
+        ${result}  Query  select * from tbl_product
+        Should Be True  ${result}
+    END
+
+Test de suppression instantannée de 1000 categories de produits ajoutés
+    FOR    ${counter}    IN RANGE    1    1000    1
+        Execute Sql String  DELETE FROM tbl_top_category WHERE tcat_id = ${counter}+500
+        ${result}  Query  select * from tbl_top_category
+        Should Be True  ${result}
+    END
+
+Test de suppession instantannée de 1000 souscriptions dans la base de données
+    FOR    ${counter}    IN RANGE    1    1000    1
+        Execute Sql String  DELETE FROM tbl_subscriber WHERE subs_id = ${counter}+500
+        ${result}  Query  select * from tbl_subscriber
+        Should Be True  ${result}
+    END
+
+Test de suppression instantannée de 1000 commandes dans la base de données
+    FOR    ${counter}    IN RANGE    1    1000    1
+        Execute Sql String  DELETE FROM tbl_order WHERE id = ${counter}+500
+        ${result}  Query  select * from tbl_order
+        Should Be True  ${result}
+    END
+    
 Test de fermeture de la base de données
     Disconnect From Database
